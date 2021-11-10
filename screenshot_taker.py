@@ -12,7 +12,7 @@ import glob
 
 def compare_images(image_1, image_2):
     if current_number == 1:
-        return True
+        return False
     hash0 = imagehash.average_hash(Image.open(image_1))
     hash1 = imagehash.average_hash(Image.open(image_2))
     cutoff = 1  # maximum bits that could be different between the hashes.
@@ -40,7 +40,7 @@ def main_thread():
                     ("./src/screenshot_" + str(current_number - 1) + ".png"),
                     ("./src/screenshot_" + str(current_number - 0) + ".png"),
                 )
-                == True
+                == False
             ):
                 shutil.copy(
                     ("./src/screenshot_" + str(current_number - 0) + ".png"),
@@ -55,7 +55,7 @@ def main_thread():
 def stop_thread():
     global stop_sign
     while True:
-        if keyboard.is_pressed("ctrl+p"):
+        if keyboard.is_pressed("ctrl+y"):
             if stop_sign == False:
                 stop_sign = True
                 print("Paused")
