@@ -74,6 +74,14 @@ def stop_thread():
             time.sleep(1)
 
 
+src_path = "./src"
+if not os.path.exists(src_path):
+    os.makedirs(src_path)
+
+src_final_images = "./final_images"
+if not os.path.exists(src_final_images):
+    os.makedirs(src_final_images)
+
 current_number = 1
 stop_sign = True
 
