@@ -54,6 +54,7 @@ def main_thread():
 
 def stop_thread():
     global stop_sign
+    global current_number
     while True:
         if keyboard.is_pressed("ctrl+y"):
             if stop_sign == False:
@@ -71,6 +72,7 @@ def stop_thread():
             for f in files:
                 os.remove(f)
             print("Files Cleared")
+            current_number = 1
             time.sleep(1)
 
 
@@ -81,6 +83,15 @@ if not os.path.exists(src_path):
 src_final_images = "./final_images"
 if not os.path.exists(src_final_images):
     os.makedirs(src_final_images)
+
+files = glob.glob("./src/*")
+for f in files:
+    os.remove(f)
+files = glob.glob("./final_images/*")
+for f in files:
+    os.remove(f)
+print("Prints anteriores deletados")
+time.sleep(1)
 
 current_number = 1
 stop_sign = True
