@@ -2,12 +2,14 @@ import time
 import os
 import shutil
 from threading import Thread
+import random
 
 from PIL import Image
 from PIL import ImageGrab
 import imagehash
 import keyboard
 import glob
+import img2pdf
 
 
 def compare_images(image_1, image_2):
@@ -46,6 +48,8 @@ def main_thread():
                     ("./src/screenshot_" + str(current_number - 0) + ".png"),
                     ("./final_images/screenshot_" + str(current_number - 0) + ".png"),
                 )
+            if current_number > 10:
+                os.remove("./src/screenshot_" + str(current_number - 10) + ".png")
             current_number = current_number + 1
 
         else:
@@ -75,6 +79,26 @@ def stop_thread():
             current_number = 1
             print("Resetado e pausado")
             time.sleep(1)
+        elif keyboard.is_pressed("ctrl+s"):
+            print("Convertendo (1%) ...")
+            stop_sign = True
+            time.sleep(5)
+            with open(
+                "resultado_" + str(random.randint(1000, 9999)) + ".pdf", "wb"
+            ) as f:
+                f.write(img2pdf.convert(glob.glob("./final_images/*")))
+            print("Convertendo (50%) ...")
+            time.sleep(5)
+            files = glob.glob("./src/*")
+            for f in files:
+                os.remove(f)
+            files = glob.glob("./final_images/*")
+            for f in files:
+                os.remove(f)
+            print("Convertendo (100%)")
+            print("\nFotos convertidas para PDF\n1 = Fechar programa")
+            resposta = input()
+            exit()
 
 
 src_path = "./src"
@@ -85,20 +109,12 @@ src_final_images = "./final_images"
 if not os.path.exists(src_final_images):
     os.makedirs(src_final_images)
 
-files = glob.glob("./src/*")
-for f in files:
-    os.remove(f)
-files = glob.glob("./final_images/*")
-for f in files:
-    os.remove(f)
-print("Prints anteriores deletados")
-time.sleep(1)
 
 current_number = 1
 stop_sign = True
 
 print(
-    "\n!!Aperte Ctrl + Y para iniciar!!\n\nInstruções:\nCtrl+y - Pausar/Despausar\nCtrl+x - Resetar Programa"
+    "\n!!Aperte Ctrl + Y para iniciar!!\n\nInstruções:\nCtrl + y - Pausar/Despausar\nCtrl + s - Salvar e converter pra PDF depois de finalizado (OBS: Se fechar sem dar control S -> NÃO VAI SALVAR)\nCtrl + x - Resetar Programa (Necessário se fechou sem dar ctrl + S)"
 )
 
 th_1 = Thread(target=main_thread)
