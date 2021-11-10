@@ -59,10 +59,10 @@ def stop_thread():
         if keyboard.is_pressed("ctrl+y"):
             if stop_sign == False:
                 stop_sign = True
-                print("Paused")
+                print("Pausado")
             elif stop_sign == True:
                 stop_sign = False
-                print("Unpaused")
+                print("Despausado")
             time.sleep(1)
         elif keyboard.is_pressed("ctrl+x"):
             files = glob.glob("./src/*")
@@ -71,8 +71,9 @@ def stop_thread():
             files = glob.glob("./final_images/*")
             for f in files:
                 os.remove(f)
-            print("Files Cleared")
+            stop_sign = True
             current_number = 1
+            print("Resetado e pausado")
             time.sleep(1)
 
 
@@ -96,6 +97,9 @@ time.sleep(1)
 current_number = 1
 stop_sign = True
 
+print(
+    "\n!!Aperte Ctrl + Y para iniciar!!\n\nInstruções:\nCtrl+y - Pausar/Despausar\nCtrl+x - Resetar Programa"
+)
 
 th_1 = Thread(target=main_thread)
 th_1.start()
